@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 
 let mainWindow;
 
@@ -12,4 +12,5 @@ app.on('ready', () => {
   });
 
   mainWindow.loadFile('pages/index.html'); // Load the HTML file
+  Menu.setApplicationMenu(null);
 });
