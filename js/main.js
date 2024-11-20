@@ -11,5 +11,5 @@ app.on('ready', () => {
     },
   });
 
-  mainWindow.loadFile('index.html'); // Load the HTML file
+  mainWindow.loadFile('pages/index.html'); // Load the HTML file
 });
