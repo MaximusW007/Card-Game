@@ -11,17 +11,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const cardDisplay = document.getElementById('card-display');
     const bankHalfButton = document.getElementById('bank-half');
     const endTurnButton = document.getElementById('end-turn');
+    const cardTracker = document.getElementById('card-tracker'); // New tracker for cards drawn
   
     // Game Variables
-    let selectedPlayerCount = 2; // Default player count
+    let selectedPlayerCount = 2;
     let players = [];
     let currentPlayerIndex = 0;
-    let isPictureCard = false; // Track if a picture card was drawn
-    let cardsDrawnThisTurn = 0; // Track the number of cards drawn in the current turn
+    let isPictureCard = false;
+    let cardsDrawnThisTurn = 0;
+    let deckSize = 52;
     const cardValues = [
       '2', '3', '4', '5', '6', '7', '8', '9', '10',
       'J', 'Q', 'K', 'A', 'Joker',
     ];
+    let usedCards = [];
   
     // Update player count dynamically when slider changes
     slider.addEventListener('input', () => {
@@ -42,9 +45,9 @@ window.addEventListener('DOMContentLoaded', () => {
   
     // Initialize the game with the selected number of players
     function initializeGame(playerCount) {
-      console.log(`Game starting with ${playerCount} players...`);
       createPlayers(playerCount);
       updateTurnIndicator();
+      resetCardTracker(); // Reset tracker for first turn
     }
   
     // Create players dynamically
@@ -53,14 +56,18 @@ window.addEventListener('DOMContentLoaded', () => {
       players = [];
   
       for (let i = 1; i <= playerCount; i++) {
-        players.push({ id: i, score: 0 });
+        players.push({ id: i, liveScore: 0, bankedScore: 0 });
   
         // Create player UI
         const playerDiv = document.createElement('div');
         playerDiv.classList.add('player');
         playerDiv.innerHTML = `
           <img src="https://via.placeholder.com/80" alt="Player ${i}" />
-          <div class="score" id="player-${i}-score">Score: 0</div>
+          <div class="score-group">
+            <div id="player-${i}-live-score" class="score live-score">Live: 0</div>
+            <div id="player-${i}-banked-score" class="score banked-score">Banked: 0</div>
+            <div id="player-${i}-total-score" class="score total-score">Total: 0</div>
+          </div>
         `;
         playerArea.appendChild(playerDiv);
       }
@@ -71,31 +78,67 @@ window.addEventListener('DOMContentLoaded', () => {
       turnIndicator.textContent = `Player ${players[currentPlayerIndex].id}'s Turn`;
     }
   
+    // Reset card tracker
+    function resetCardTracker() {
+      cardTracker.innerHTML = ''; // Clear existing dots
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('card-dot');
+        cardTracker.appendChild(dot);
+      }
+    }
+  
+    // Update card tracker
+    function updateCardTracker() {
+      const dots = cardTracker.querySelectorAll('.card-dot');
+      if (cardsDrawnThisTurn > 0 && cardsDrawnThisTurn <= dots.length) {
+        dots[cardsDrawnThisTurn - 1].classList.add('active');
+      }
+    }
+  
     // Simulate drawing a card
     function drawCard() {
+      if (deckSize <= 6) {
+        determineWinner();
+        return null;
+      }
+  
       const randomIndex = Math.floor(Math.random() * cardValues.length);
-      return cardValues[randomIndex];
+      const card = cardValues[randomIndex];
+  
+      // If Joker is drawn, replace it back into the deck
+      if (card === 'Joker') {
+        return card; // Joker is not removed
+      }
+  
+      usedCards.push(card);
+      deckSize--;
+      return card;
     }
   
     // Handle deck click to draw a card
     deck.addEventListener('click', () => {
       if (cardsDrawnThisTurn < 3) {
         const card = drawCard();
+        if (!card) return; // No card means game ended
+  
         cardDisplay.textContent = card; // Show the drawn card
-        console.log(`Player ${players[currentPlayerIndex].id} drew: ${card}`);
         handleCardDraw(card);
         cardsDrawnThisTurn++;
+        updateCardTracker(); // Update tracker after card draw
   
         if (cardsDrawnThisTurn >= 1) {
           endTurnButton.disabled = false; // Enable "End Turn" button after the first draw
         }
   
         if (cardsDrawnThisTurn === 3) {
-          endTurnButton.disabled = true; // Disable "End Turn" button after 3 draws
-          setTimeout(nextTurn, 1000); // Automatically end turn after 3 cards
+          if (['J', 'Q', 'K'].includes(card)) {
+            bankHalfButton.disabled = false;
+          } else {
+            setTimeout(() => endTurnButton.click(), 1500); // Automatically trigger end turn
+          }
         }
   
-        // Hide the card value after 1.5 seconds
         setTimeout(() => {
           cardDisplay.textContent = '?'; // Reset the deck display
         }, 1500);
@@ -109,51 +152,89 @@ window.addEventListener('DOMContentLoaded', () => {
       if (['J', 'Q', 'K'].includes(card)) {
         isPictureCard = true;
         bankHalfButton.disabled = false;
-      } else if (card === 'Joker') {
-        // Joker logic: Reset player's score
-        currentPlayer.score = 0;
-        document.getElementById(
-          `player-${currentPlayer.id}-score`
-        ).textContent = `Score: 0`;
       } else {
-        // Add card value to player's score
-        currentPlayer.score += parseInt(card) || 0;
-        document.getElementById(
-          `player-${currentPlayer.id}-score`
-        ).textContent = `Score: ${currentPlayer.score}`;
+        isPictureCard = false;
+        bankHalfButton.disabled = true;
       }
+  
+      if (card === 'A') {
+        currentPlayer.liveScore += 11;
+      } else if (card === 'Joker') {
+        currentPlayer.liveScore = 0;
+      } else if (!['J', 'Q', 'K'].includes(card)) {
+        currentPlayer.liveScore += parseInt(card) || 0;
+      }
+  
+      updatePlayerScores(currentPlayer);
+    }
+  
+    // Update player scores on the UI
+    function updatePlayerScores(player) {
+      document.getElementById(`player-${player.id}-live-score`).textContent = `Live: ${player.liveScore}`;
+      document.getElementById(`player-${player.id}-banked-score`).textContent = `Banked: ${player.bankedScore}`;
+      document.getElementById(`player-${player.id}-total-score`).textContent = `Total: ${player.liveScore + player.bankedScore}`;
     }
   
     // Handle "Bank Half" button
     bankHalfButton.addEventListener('click', () => {
+      const currentPlayer = players[currentPlayerIndex];
       if (isPictureCard) {
-        const currentPlayer = players[currentPlayerIndex];
-        currentPlayer.score = Math.floor(currentPlayer.score / 2);
-        document.getElementById(
-          `player-${currentPlayer.id}-score`
-        ).textContent = `Score: ${currentPlayer.score}`;
-        bankHalfButton.disabled = true;
+        currentPlayer.bankedScore += Math.floor(currentPlayer.liveScore / 2);
+        currentPlayer.liveScore = 0; // Reset live score
+        updatePlayerScores(currentPlayer);
+  
         isPictureCard = false;
+        bankHalfButton.disabled = true;
+  
+        setTimeout(nextTurn, 1000); // End the turn automatically
       }
     });
   
     // Handle "End Turn" button
     endTurnButton.addEventListener('click', () => {
       if (cardsDrawnThisTurn >= 1) {
-        endTurnButton.disabled = true;
-        bankHalfButton.disabled = true;
-        isPictureCard = false;
-        setTimeout(nextTurn, 1000);
+        cardsDrawnThisTurn = 0; // Reset tracker for the next turn
+        resetCardTracker();
+        nextTurn();
       }
     });
   
     // Move to the next player's turn
     function nextTurn() {
-      cardsDrawnThisTurn = 0; // Reset card count for the next turn
+      cardsDrawnThisTurn = 0;
       currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
       updateTurnIndicator();
-      endTurnButton.disabled = true; // Disable "End Turn" button initially
-      bankHalfButton.disabled = true; // Disable "Bank Half" button initially
+      resetCardTracker(); // Reset tracker for the new player
+      bankHalfButton.disabled = true;
+      endTurnButton.disabled = true;
+    }
+  
+    // Determine the winner
+    function determineWinner() {
+      let highestScore = 0;
+      let winners = [];
+  
+      players.forEach((player) => {
+        const totalScore = player.liveScore + player.bankedScore;
+        if (totalScore > highestScore) {
+          highestScore = totalScore;
+          winners = [player];
+        } else if (totalScore === highestScore) {
+          winners.push(player);
+        }
+      });
+  
+      if (winners.length === 1) {
+        alert(`Player ${winners[0].id} wins with ${highestScore} points!`);
+      } else {
+        alert(`It's a tie between ${winners.map((w) => `Player ${w.id}`).join(', ')} with ${highestScore} points each!`);
+      }
+      resetGame();
+    }
+  
+    // Reset the game
+    function resetGame() {
+      location.reload();
     }
   });
   
