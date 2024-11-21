@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joker Hunt</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joker Hunt</title>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <h1>Welcome To The Joker Hunt</h1>
-    <p id="instructions">Draw cards and avoid the Joker to win!</p>
-    <button id="start-game">Start Game</button>
+  <div class="container">
+    <h1 id="game-title" class="fade-in">Joker Hunt</h1>
+    <div id="buttons" class="fade-in">
+      <button id="play-game" class="btn">Play</button>
+      <button id="view-rules" class="btn">Rules</button>
+    </div>
+  </div>
+  <script src="../js/renderer.js"></script>
 </body>
-<script src="../js/renderer.js"></script>
 </html>
