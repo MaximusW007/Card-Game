@@ -19,9 +19,23 @@
 
   <!-- Game Screen (hidden initially) -->
   <div id="game-screen" class="screen hidden">
-    <h1 class="title">Joker Hunt</h1>
-    <div id="game-content">
-      <!-- Game content will be added dynamically -->
+    <!-- Turn Indicator -->
+    <div id="turn-indicator" class="turn-message">Player 1's Turn</div>
+
+    <!-- Main Deck Area -->
+    <div id="main-deck-area">
+      <div id="deck" class="deck">Deck</div>
+      <div id="discard-pile" class="deck">Discard Pile</div>
+    </div>
+
+    <!-- Player Area -->
+    <div id="player-area">
+      <!-- Player icons and scores will be dynamically added here -->
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="action-buttons">
+      <button id="bank-half" class="btn" disabled>Bank Half</button>
     </div>
   </div>
 

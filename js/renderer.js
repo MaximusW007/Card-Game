@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Navigate to game.html when "Play" is clicked
   if (playButton) {
     playButton.addEventListener('click', () => {
-      window.location.href = '../pages/game.html'; // Navigate to the game screen
+      window.location.href = '../pages/game.html';
     });
   }
 
