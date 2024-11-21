@@ -7,6 +7,8 @@ const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
+    minWidth: 1000,
+    minHeight: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Absolute path to preload script
       contextIsolation: true, // Secure context for renderer process

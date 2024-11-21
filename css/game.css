@@ -27,10 +27,10 @@ body {
   /* Turn Indicator */
   .turn-message {
     position: absolute;
-    top: 10px;
+    top: 5%;
     width: 100%;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: #000;
   }
@@ -38,33 +38,55 @@ body {
   /* Main Deck Area */
   #main-deck-area {
     position: absolute;
-    top: 25%;
+    top: 18%; /* Adjusted for better spacing */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   
+  /* Card Tracker */
+  #card-tracker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .card-dot {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card-dot.active {
+    background-color: #4caf50; /* Green for active dots */
+  }
+  
   /* Card Deck */
   .deck {
-    position: relative;
-    width: 120px;
-    height: 180px;
+    width: 10vw;
+    height: 15vw;
+    max-width: 120px;
+    max-height: 180px;
     background-color: #fff;
-    border: 3px solid #000;
-    border-radius: 8px;
+    border: 0.2rem solid #000;
+    border-radius: 0.8rem;
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0.2rem 0.4rem 0.6rem rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 5%; /* Gap between the deck and action buttons */
+    margin-bottom: 6vh; /* Larger spacing from buttons */
   }
   
   .deck:hover {
     transform: scale(1.05);
-    box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 0.4rem 0.6rem 0.8rem rgba(0, 0, 0, 0.4);
   }
   
   /* Card Display */
@@ -73,30 +95,9 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: #000;
-  }
-  
-  /* Card Selection Tracker */
-  #card-tracker {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .card-dot {
-    width: 20px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 50%;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .card-dot.active {
-    background-color: #4caf50; /* Green for active dots */
   }
   
   /* Action Buttons */
@@ -104,19 +105,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5%; /* Gap from deck to buttons */
+    gap: 3rem; /* Spacing between buttons */
+    margin-top: 8rem;
   }
   
   .btn {
     background-color: #f28b82;
-    border: 3px solid #000;
+    border: 0.3rem solid #000;
     color: #000;
-    padding: 10px 30px;
-    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 8px;
-    margin: 0 10px;
+    border-radius: 1rem;
     transition: all 0.3s ease;
   }
   
@@ -135,32 +136,32 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
   }
   
   .slider {
     -webkit-appearance: none;
-    width: 80%; /* Full width for flexibility */
-    height: 10px;
+    width: 80%;
+    height: 1rem;
     background: #ddd;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     outline: none;
-    margin-top: 10px;
+    margin-top: 1rem;
   }
   
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 1.5rem;
+    height: 1.5rem;
     background: #4caf50;
     border-radius: 50%;
     cursor: pointer;
   }
   
   .slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 1.5rem;
+    height: 1.5rem;
     background: #4caf50;
     border-radius: 50%;
     cursor: pointer;
@@ -177,9 +178,9 @@ body {
     justify-content: space-evenly;
     align-items: flex-end;
     margin: 0 auto;
-    width: 100%;
+    width: 90%; /* Adjust width to scale with screen size */
     position: absolute;
-    bottom: 10px;
+    bottom: 8%; /* Adjusted spacing for players */
   }
   
   .player {
@@ -189,11 +190,13 @@ body {
   }
   
   .player img {
-    width: 80px;
-    height: 80px;
+    width: 6vw;
+    height: 6vw;
+    max-width: 80px;
+    max-height: 80px;
     border-radius: 50%;
-    margin-bottom: 10px;
-    border: 2px solid #000;
+    margin-bottom: 0.5rem;
+    border: 0.2rem solid #000;
     object-fit: cover;
   }
   
@@ -201,14 +204,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 0.5rem;
   }
   
   .player .score {
     font-size: 1rem;
     font-weight: bold;
     color: #000;
-    margin: 5px 0;
+    margin: 0.3rem 0;
   }
   
   .live-score {
