@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
     const playerCountScreen = document.getElementById('player-count-screen');
     const gameScreen = document.getElementById('game-screen');
     const slider = document.getElementById('player-slider');
@@ -7,12 +8,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const playerArea = document.getElementById('player-area');
     const turnIndicator = document.getElementById('turn-indicator');
     const deck = document.getElementById('deck');
+    const cardDisplay = document.getElementById('card-display');
     const bankHalfButton = document.getElementById('bank-half');
+    const endTurnButton = document.getElementById('end-turn');
   
+    // Game Variables
     let selectedPlayerCount = 2; // Default player count
     let players = [];
     let currentPlayerIndex = 0;
-    let isPictureCard = false; // Track whether a picture card was drawn
+    let isPictureCard = false; // Track if a picture card was drawn
+    let cardsDrawnThisTurn = 0; // Track the number of cards drawn in the current turn
+    const cardValues = [
+      '2', '3', '4', '5', '6', '7', '8', '9', '10',
+      'J', 'Q', 'K', 'A', 'Joker',
+    ];
   
     // Update player count dynamically when slider changes
     slider.addEventListener('input', () => {
@@ -24,7 +33,6 @@ window.addEventListener('DOMContentLoaded', () => {
     startGameButton.addEventListener('click', () => {
       playerCountScreen.classList.add('fade-out');
   
-      // Wait for the fade-out animation to finish, then show the game screen
       setTimeout(() => {
         playerCountScreen.classList.add('hidden'); // Hide player count screen
         gameScreen.classList.remove('hidden'); // Show game screen
@@ -63,65 +71,89 @@ window.addEventListener('DOMContentLoaded', () => {
       turnIndicator.textContent = `Player ${players[currentPlayerIndex].id}'s Turn`;
     }
   
-    // Handle card draws
-    deck.addEventListener('click', () => {
-      const card = drawCard();
-      console.log(`Player ${players[currentPlayerIndex].id} drew: ${card}`);
-      handleCardDraw(card);
-    });
-  
     // Simulate drawing a card
     function drawCard() {
-      const cardTypes = [
-        '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        'J', 'Q', 'K', 'A', 'Joker'
-      ];
-      const randomIndex = Math.floor(Math.random() * cardTypes.length);
-      return cardTypes[randomIndex];
+      const randomIndex = Math.floor(Math.random() * cardValues.length);
+      return cardValues[randomIndex];
     }
   
-    // Handle the logic when a card is drawn
+    // Handle deck click to draw a card
+    deck.addEventListener('click', () => {
+      if (cardsDrawnThisTurn < 3) {
+        const card = drawCard();
+        cardDisplay.textContent = card; // Show the drawn card
+        console.log(`Player ${players[currentPlayerIndex].id} drew: ${card}`);
+        handleCardDraw(card);
+        cardsDrawnThisTurn++;
+  
+        if (cardsDrawnThisTurn >= 1) {
+          endTurnButton.disabled = false; // Enable "End Turn" button after the first draw
+        }
+  
+        if (cardsDrawnThisTurn === 3) {
+          endTurnButton.disabled = true; // Disable "End Turn" button after 3 draws
+          setTimeout(nextTurn, 1000); // Automatically end turn after 3 cards
+        }
+  
+        // Hide the card value after 1.5 seconds
+        setTimeout(() => {
+          cardDisplay.textContent = '?'; // Reset the deck display
+        }, 1500);
+      }
+    });
+  
+    // Handle card draw logic
     function handleCardDraw(card) {
+      const currentPlayer = players[currentPlayerIndex];
+  
       if (['J', 'Q', 'K'].includes(card)) {
         isPictureCard = true;
         bankHalfButton.disabled = false;
       } else if (card === 'Joker') {
         // Joker logic: Reset player's score
-        players[currentPlayerIndex].score = 0;
+        currentPlayer.score = 0;
         document.getElementById(
-          `player-${players[currentPlayerIndex].id}-score`
+          `player-${currentPlayer.id}-score`
         ).textContent = `Score: 0`;
       } else {
         // Add card value to player's score
-        players[currentPlayerIndex].score += parseInt(card) || 0;
+        currentPlayer.score += parseInt(card) || 0;
         document.getElementById(
-          `player-${players[currentPlayerIndex].id}-score`
-        ).textContent = `Score: ${players[currentPlayerIndex].score}`;
+          `player-${currentPlayer.id}-score`
+        ).textContent = `Score: ${currentPlayer.score}`;
       }
-  
-      // End turn and move to next player
-      setTimeout(nextTurn, 1000);
-    }
-  
-    // Move to the next player's turn
-    function nextTurn() {
-      isPictureCard = false;
-      bankHalfButton.disabled = true;
-      currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-      updateTurnIndicator();
     }
   
     // Handle "Bank Half" button
     bankHalfButton.addEventListener('click', () => {
       if (isPictureCard) {
-        const player = players[currentPlayerIndex];
-        player.score = Math.floor(player.score / 2);
+        const currentPlayer = players[currentPlayerIndex];
+        currentPlayer.score = Math.floor(currentPlayer.score / 2);
         document.getElementById(
-          `player-${player.id}-score`
-        ).textContent = `Score: ${player.score}`;
+          `player-${currentPlayer.id}-score`
+        ).textContent = `Score: ${currentPlayer.score}`;
         bankHalfButton.disabled = true;
         isPictureCard = false;
       }
     });
+  
+    // Handle "End Turn" button
+    endTurnButton.addEventListener('click', () => {
+      if (cardsDrawnThisTurn >= 1) {
+        endTurnButton.disabled = true;
+        bankHalfButton.disabled = true;
+        isPictureCard = false;
+        setTimeout(nextTurn, 1000);
+      }
+    });
+  
+    // Move to the next player's turn
+    function nextTurn() {
+      cardsDrawnThisTurn = 0; // Reset card count for the next turn
+      currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+      updateTurnIndicator();
+      endTurnButton.disabled = true; // Disable "End Turn" button initially
+      bankHalfButton.disabled = true; // Disable "Bank Half" button initially
+    }
   });
   

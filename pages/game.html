@@ -22,10 +22,11 @@
     <!-- Turn Indicator -->
     <div id="turn-indicator" class="turn-message">Player 1's Turn</div>
 
-    <!-- Main Deck Area -->
+    <!-- Main Deck -->
     <div id="main-deck-area">
-      <div id="deck" class="deck">Deck</div>
-      <div id="discard-pile" class="deck">Discard Pile</div>
+      <div id="deck" class="deck">
+        <span id="card-display">?</span> <!-- Card value will be displayed here -->
+      </div>
     </div>
 
     <!-- Player Area -->
@@ -36,6 +37,7 @@
     <!-- Action Buttons -->
     <div id="action-buttons">
       <button id="bank-half" class="btn" disabled>Bank Half</button>
+      <button id="end-turn" class="btn" disabled>End Turn</button>
     </div>
   </div>
 
