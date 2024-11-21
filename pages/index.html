@@ -7,13 +7,37 @@
   <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1 id="game-title" class="fade-in">Joker Hunt</h1>
-    <div id="buttons" class="fade-in">
+  <!-- Main Menu Screen -->
+  <div id="main-menu" class="screen">
+    <h1 class="title">Joker Hunt</h1>
+    <div class="button-container">
       <button id="play-game" class="btn">Play</button>
       <button id="view-rules" class="btn">Rules</button>
     </div>
   </div>
+
+  <!-- Rules Screen -->
+  <div id="rules-screen" class="screen hidden">
+    <h1 class="title">Rules</h1>
+    <div class="content">
+      <p>
+        Joker Hunt is a card game where players draw cards to score points. Avoid drawing a Joker,
+        as it will cost you all your unbanked points! Use picture cards to bank half your points
+        safely. Here's how to play:
+      </p>
+      <ol>
+        <li>Click "Play" to start the game.</li>
+        <li>On your turn, draw up to three cards.</li>
+        <li>If you draw a picture card (J, Q, K), you can bank half your points to save them.</li>
+        <li>If you draw a Joker, you lose all your unbanked points!</li>
+        <li>The player with the highest score at the end of the game wins.</li>
+      </ol>
+    </div>
+    <div class="button-container">
+      <button id="back-to-menu" class="btn">Back</button>
+    </div>
+  </div>
+
   <script src="../js/renderer.js"></script>
 </body>
 </html>

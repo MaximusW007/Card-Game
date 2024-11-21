@@ -1,15 +1,19 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const gameTitle = document.getElementById('game-title');
-    const buttons = document.getElementById('buttons');
-  
-    // Add fade-in class to title immediately
-    gameTitle.classList.add('fade-in');
-  
-    // Delay adding fade-in class to buttons
-    setTimeout(() => {
-      buttons.querySelectorAll('.btn').forEach(button => {
-        button.classList.add('fade-in'); // Add animation to each button
-      });
-    }, 1500); // Delay of 1.5 seconds for buttons to fade in after the title
+  // References to screens and buttons
+  const mainMenu = document.getElementById('main-menu');
+  const rulesScreen = document.getElementById('rules-screen');
+  const rulesButton = document.getElementById('view-rules');
+  const backButton = document.getElementById('back-to-menu');
+
+  // Show the Rules screen
+  rulesButton.addEventListener('click', () => {
+    mainMenu.classList.add('hidden');
+    rulesScreen.classList.remove('hidden');
   });
-  
+
+  // Go back to the Main Menu
+  backButton.addEventListener('click', () => {
+    rulesScreen.classList.add('hidden');
+    mainMenu.classList.remove('hidden');
+  });
+});
