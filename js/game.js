@@ -7,11 +7,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const startGameButton = document.getElementById('start-game');
     const playerArea = document.getElementById('player-area');
     const turnIndicator = document.getElementById('turn-indicator');
-    const deck = document.getElementById('deck');
+    const deckElement = document.getElementById('deck');
     const cardDisplay = document.getElementById('card-display');
     const bankHalfButton = document.getElementById('bank-half');
     const endTurnButton = document.getElementById('end-turn');
-    const cardTracker = document.getElementById('card-tracker'); // Card tracker for visual feedback
+    const cardTracker = document.getElementById('card-tracker');
+    const shuffleButton = document.getElementById('shuffle-deck'); // Shuffle button
 
     // Game Variables
     let selectedPlayerCount = 2;
@@ -19,13 +20,14 @@ window.addEventListener('DOMContentLoaded', () => {
     let currentPlayerIndex = 0;
     let isPictureCard = false;
     let cardsDrawnThisTurn = 0;
-    let deckSize = 52;
+    let deck = [];
+    let usedCards = [];
+    let gamePaused = false; // Tracks if the game is paused (e.g., during shuffle)
+
     const cardValues = [
         '2', '3', '4', '5', '6', '7', '8', '9', '10',
         'J', 'Q', 'K', 'A', 'Joker',
     ];
-    let usedCards = [];
-    let gameOver = false;
 
     // Update player count dynamically when slider changes
     slider.addEventListener('input', () => {
@@ -46,9 +48,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the game
     function initializeGame(playerCount) {
+        shuffleButton.classList.add('hidden'); // Ensure shuffle button is hidden at the start
         createPlayers(playerCount);
+        initializeDeck();
         updateTurnIndicator();
-        resetCardTracker(); // Reset tracker for first turn
+        resetCardTracker();
     }
 
     // Create players dynamically
@@ -74,7 +78,21 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Update the turn indicator to show the current player's turn
+    // Initialize the deck
+    function initializeDeck() {
+        deck = [...cardValues, ...cardValues, 'Joker', 'Joker'];
+        shuffleDeck(deck);
+    }
+
+    // Shuffle the deck
+    function shuffleDeck(deck) {
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]]; // Swap cards
+        }
+    }
+
+    // Update turn indicator
     function updateTurnIndicator() {
         turnIndicator.textContent = `Player ${players[currentPlayerIndex].id}'s Turn`;
     }
@@ -97,57 +115,50 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Simulate drawing a card
+    // Draw a card
     function drawCard() {
-        if (deckSize <= 6) {
+        if (deck.length === 0) {
             determineWinner();
             return null;
         }
-
-        const randomIndex = Math.floor(Math.random() * cardValues.length);
-        const card = cardValues[randomIndex];
-
-        // If Joker is drawn, replace it back into the deck
-        if (card === 'Joker') {
-            return card; // Joker is not removed
-        }
-
+        const card = deck.pop();
         usedCards.push(card);
-        deckSize--;
         return card;
     }
 
-    // Handle deck click to draw a card
-    deck.addEventListener('click', () => {
-        if (cardsDrawnThisTurn < 3 && !gameOver) {
-            const card = drawCard();
-            if (!card) return; // No card means game ended
+    // Deck click handler
+    deckElement.addEventListener('click', () => {
+        if (gamePaused || cardsDrawnThisTurn >= 3) return;
 
-            cardDisplay.textContent = card; // Show the drawn card
-            handleCardDraw(card);
-            cardsDrawnThisTurn++;
-            updateCardTracker(); // Update tracker after card draw
+        const card = drawCard();
+        if (!card) return;
 
-            if (cardsDrawnThisTurn >= 1) {
-                endTurnButton.disabled = false; // Enable "End Turn" button
-            }
+        cardDisplay.textContent = card; // Display the card
+        handleCardDraw(card);
+        cardsDrawnThisTurn++;
+        updateCardTracker();
 
-            if (cardsDrawnThisTurn === 3) {
-                if (!isPictureCard) {
-                    setTimeout(() => endTurnButton.click(), 1500); // Auto-end turn
-                }
-            }
-
-            setTimeout(() => {
-                cardDisplay.textContent = '?'; // Reset card display
-            }, 1500);
+        if (cardsDrawnThisTurn >= 1) {
+            endTurnButton.disabled = false; // Enable "End Turn" button
         }
+
+        if (cardsDrawnThisTurn === 3 && !isPictureCard) {
+            setTimeout(() => endTurnButton.click(), 1500); // Auto-end turn
+        }
+
+        setTimeout(() => {
+            cardDisplay.textContent = '?'; // Reset card display
+        }, 1500);
     });
 
     // Handle card draw logic
     function handleCardDraw(card) {
-        const currentPlayer = players[currentPlayerIndex];
+        if (card === 'Joker') {
+            handleJokerDraw();
+            return;
+        }
 
+        const currentPlayer = players[currentPlayerIndex];
         if (['J', 'Q', 'K'].includes(card)) {
             isPictureCard = true;
             bankHalfButton.disabled = false;
@@ -158,60 +169,118 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (card === 'A') {
             currentPlayer.liveScore += 11;
-        } else if (card === 'Joker') {
-            currentPlayer.liveScore = 0;
-        } else if (!['J', 'Q', 'K'].includes(card)) {
+        } else {
             currentPlayer.liveScore += parseInt(card) || 0;
         }
 
         updatePlayerScores(currentPlayer);
     }
 
-    // Update player scores on the UI and check for winner
+    // Handle Joker draw
+    function handleJokerDraw() {
+        const currentPlayer = players[currentPlayerIndex];
+        currentPlayer.liveScore = 0; // Reset live score
+        updatePlayerScores(currentPlayer);
+
+        // Reset tracker and disable buttons
+        cardsDrawnThisTurn = 0; // Reset card count
+        resetCardTracker(); // Reset card tracker UI
+        shuffleButton.classList.remove('hidden'); // Show shuffle button
+        disableGameplay();
+    }
+
+    // Shuffle button logic
+    shuffleButton.addEventListener('click', () => {
+        deck = [...deck, ...usedCards];
+        usedCards = [];
+        shuffleDeck(deck);
+        shuffleButton.classList.add('hidden');
+        enableGameplay();
+        cardsDrawnThisTurn = 0; // Ensure cardsDrawnThisTurn resets properly
+        nextTurn();
+    });
+
+    // Disable all gameplay buttons
+    function disableGameplay() {
+        gamePaused = true;
+        deckElement.style.pointerEvents = 'none';
+        bankHalfButton.disabled = true;
+        endTurnButton.disabled = true;
+    }
+
+    // Enable all gameplay buttons
+    function enableGameplay() {
+        gamePaused = false;
+        deckElement.style.pointerEvents = 'auto';
+        bankHalfButton.disabled = true;
+        endTurnButton.disabled = true;
+    }
+
+    // Update player scores
     function updatePlayerScores(player) {
         document.getElementById(`player-${player.id}-live-score`).textContent = `Live: ${player.liveScore}`;
         document.getElementById(`player-${player.id}-banked-score`).textContent = `Banked: ${player.bankedScore}`;
         document.getElementById(`player-${player.id}-total-score`).textContent = `Total: ${player.liveScore + player.bankedScore}`;
-
-        if (player.liveScore + player.bankedScore >= 100) {
-            endGame(player);
-        }
     }
 
-    // End the game when a player reaches 100 points
-    function endGame(winningPlayer) {
-        gameOver = true;
-        alert(`Player ${winningPlayer.id} wins with ${winningPlayer.liveScore + winningPlayer.bankedScore} points!`);
-        resetGame();
-    }
-
-    // Handle "Bank Half" button
+    // Bank Half functionality
     bankHalfButton.addEventListener('click', () => {
+        if (gamePaused) return;
+
         const currentPlayer = players[currentPlayerIndex];
         if (isPictureCard) {
             currentPlayer.bankedScore += Math.floor(currentPlayer.liveScore / 2);
             currentPlayer.liveScore = 0;
             updatePlayerScores(currentPlayer);
-            bankHalfButton.disabled = true;
+
+            cardsDrawnThisTurn = 0;
+            resetCardTracker();
             nextTurn();
         }
     });
 
-    // Handle "End Turn" button
+    // End turn
     endTurnButton.addEventListener('click', () => {
-        cardsDrawnThisTurn = 0; // Reset tracker for the next turn
+        if (gamePaused) return;
+
+        cardsDrawnThisTurn = 0;
         resetCardTracker();
         nextTurn();
     });
 
-    // Move to the next player's turn
+    // Move to the next turn
     function nextTurn() {
-        cardsDrawnThisTurn = 0;
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         updateTurnIndicator();
-        resetCardTracker(); // Reset tracker for the new player
+        resetCardTracker();
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
+        cardsDrawnThisTurn = 0; // Reset card count explicitly here
+    }
+
+    // Determine the winner
+    function determineWinner() {
+        let highestScore = 0;
+        let winners = [];
+
+        players.forEach((player) => {
+            const totalScore = player.liveScore + player.bankedScore;
+            if (totalScore > highestScore) {
+                highestScore = totalScore;
+                winners = [player];
+            } else if (totalScore === highestScore) {
+                winners.push(player);
+            }
+        });
+
+        if (winners.length === 1) {
+            alert(`Player ${winners[0].id} wins with ${highestScore} points!`);
+        } else {
+            alert(
+                `It's a tie between ${winners.map((w) => `Player ${w.id}`).join(', ')} with ${highestScore} points each!`
+            );
+        }
+        resetGame();
     }
 
     // Reset the game

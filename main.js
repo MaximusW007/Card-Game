@@ -20,7 +20,7 @@ const createMainWindow = () => {
   mainWindow.loadFile('pages/index.html');
 
   // Open DevTools automatically (comment out if not needed)
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   // Remove the default menu
   Menu.setApplicationMenu(null);

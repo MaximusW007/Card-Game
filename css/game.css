@@ -8,9 +8,9 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
-  }
+}
   
-  .screen {
+.screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,14 +18,14 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-  }
+}
   
-  .hidden {
+.hidden {
     display: none;
-  }
+}
   
-  /* Turn Indicator */
-  .turn-message {
+/* Turn Indicator */
+.turn-message {
     position: absolute;
     top: 5%;
     width: 100%;
@@ -33,41 +33,41 @@ body {
     font-size: 2.5rem;
     font-weight: bold;
     color: #000;
-  }
+}
   
-  /* Main Deck Area */
-  #main-deck-area {
+/* Main Deck Area */
+#main-deck-area {
     position: absolute;
-    top: 18%; /* Adjusted for better spacing */
+    top: 18%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
+}
   
-  /* Card Tracker */
-  #card-tracker {
+/* Card Tracker */
+#card-tracker {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 2rem;
-  }
+}
   
-  .card-dot {
+.card-dot {
     width: 1.5rem;
     height: 1.5rem;
     background-color: #ccc;
     border-radius: 50%;
     margin: 0.5rem;
     transition: background-color 0.3s ease;
-  }
+}
   
-  .card-dot.active {
+.card-dot.active {
     background-color: #4caf50; /* Green for active dots */
-  }
+}
   
-  /* Card Deck */
-  .deck {
+/* Card Deck */
+.deck {
     width: 10vw;
     height: 15vw;
     max-width: 120px;
@@ -81,16 +81,16 @@ body {
     box-shadow: 0.2rem 0.4rem 0.6rem rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 6vh; /* Larger spacing from buttons */
-  }
+    margin-bottom: 6vh;
+}
   
-  .deck:hover {
+.deck:hover {
     transform: scale(1.05);
     box-shadow: 0.4rem 0.6rem 0.8rem rgba(0, 0, 0, 0.4);
-  }
+}
   
-  /* Card Display */
-  #card-display {
+/* Card Display */
+#card-display {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -98,18 +98,24 @@ body {
     font-size: 1.8rem;
     font-weight: bold;
     color: #000;
-  }
+}
   
-  /* Action Buttons */
-  #action-buttons {
+/* Action Buttons */
+#action-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 3rem; /* Spacing between buttons */
+    gap: 3rem;
     margin-top: 8rem;
-  }
+}
   
-  .btn {
+#shuffle-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+  
+.btn {
     background-color: #f28b82;
     border: 0.3rem solid #000;
     color: #000;
@@ -119,27 +125,27 @@ body {
     cursor: pointer;
     border-radius: 1rem;
     transition: all 0.3s ease;
-  }
+}
   
-  .btn:hover:enabled {
+.btn:hover:enabled {
     background-color: #f77a6f;
     transform: scale(1.05);
-  }
+}
   
-  .btn:disabled {
+.btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
+}
   
-  /* Slider Styling */
-  .slider-container {
+/* Slider Styling */
+.slider-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 2rem;
-  }
+}
   
-  .slider {
+.slider {
     -webkit-appearance: none;
     width: 80%;
     height: 1rem;
@@ -147,9 +153,9 @@ body {
     border-radius: 0.5rem;
     outline: none;
     margin-top: 1rem;
-  }
+}
   
-  .slider::-webkit-slider-thumb {
+.slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 1.5rem;
@@ -157,39 +163,39 @@ body {
     background: #4caf50;
     border-radius: 50%;
     cursor: pointer;
-  }
+}
   
-  .slider::-moz-range-thumb {
+.slider::-moz-range-thumb {
     width: 1.5rem;
     height: 1.5rem;
     background: #4caf50;
     border-radius: 50%;
     cursor: pointer;
-  }
+}
   
-  .player-count {
+.player-count {
     font-size: 1.5rem;
     color: #333;
-  }
+}
   
-  /* Player Area */
-  #player-area {
+/* Player Area */
+#player-area {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-end;
     margin: 0 auto;
-    width: 90%; /* Adjust width to scale with screen size */
+    width: 90%;
     position: absolute;
-    bottom: 8%; /* Adjusted spacing for players */
-  }
+    bottom: 8%;
+}
   
-  .player {
+.player {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
   
-  .player img {
+.player img {
     width: 6vw;
     height: 6vw;
     max-width: 80px;
@@ -198,31 +204,30 @@ body {
     margin-bottom: 0.5rem;
     border: 0.2rem solid #000;
     object-fit: cover;
-  }
+}
   
-  .score-group {
+.score-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0.5rem;
-  }
+}
   
-  .player .score {
+.player .score {
     font-size: 1rem;
     font-weight: bold;
     color: #000;
     margin: 0.3rem 0;
-  }
+}
   
-  .live-score {
+.live-score {
     color: #d9534f; /* Red for live score */
-  }
+}
   
-  .banked-score {
+.banked-score {
     color: #5cb85c; /* Green for banked score */
-  }
+}
   
-  .total-score {
+.total-score {
     color: #0275d8; /* Blue for total score */
-  }
-  
+}
