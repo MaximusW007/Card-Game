@@ -67,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const playerDiv = document.createElement('div');
             playerDiv.classList.add('player');
             playerDiv.innerHTML = `
-                <img src="https://via.placeholder.com/80" alt="Player ${i}" />
+                <img src="../Resources/user.png" alt="Player ${i}" />
                 <div class="score-group">
                     <div id="player-${i}-live-score" class="score live-score">Live: 0</div>
                     <div id="player-${i}-banked-score" class="score banked-score">Banked: 0</div>
