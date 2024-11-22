@@ -11,11 +11,12 @@ const createMainWindow = () => {
     minHeight: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Absolute path to preload script
+      icon: path.join(__dirname, 'Resources', 'Icon-win.ico'),
       contextIsolation: true, // Secure context for renderer process
       enableRemoteModule: false, // Deprecated module, best practice to disable
     },
   });
-
+  console.log('Resolved Icon Path:', path.join(__dirname, 'Resources', 'Icon-win.ico'));
   // Load the main HTML file
   mainWindow.loadFile('pages/index.html');
 
