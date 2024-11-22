@@ -135,10 +135,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         cardDisplay.textContent = card; // Display the card
         handleCardDraw(card);
-        cardsDrawnThisTurn++;
-        updateCardTracker();
 
-        if (cardsDrawnThisTurn >= 1) {
+        if (card !== 'Joker') {
+            cardsDrawnThisTurn++;
+            updateCardTracker();
+        }
+
+        if (cardsDrawnThisTurn >= 1 && !gamePaused) {
             endTurnButton.disabled = false; // Enable "End Turn" button
         }
 
@@ -206,6 +209,7 @@ window.addEventListener('DOMContentLoaded', () => {
         deckElement.style.pointerEvents = 'none';
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
+        endTurnButton.classList.add('disabled'); // Ensure visually disabled state
     }
 
     // Enable all gameplay buttons
@@ -214,6 +218,7 @@ window.addEventListener('DOMContentLoaded', () => {
         deckElement.style.pointerEvents = 'auto';
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
+        endTurnButton.classList.remove('disabled'); // Ensure visually enabled state
     }
 
     // Update player scores
