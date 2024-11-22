@@ -9,7 +9,7 @@ body {
     height: 100vh;
     overflow: hidden;
 }
-  
+
 .screen {
     display: flex;
     flex-direction: column;
@@ -19,11 +19,11 @@ body {
     height: 100%;
     position: relative;
 }
-  
+
 .hidden {
     display: none;
 }
-  
+
 /* Turn Indicator */
 .turn-message {
     position: absolute;
@@ -34,7 +34,7 @@ body {
     font-weight: bold;
     color: #000;
 }
-  
+
 /* Main Deck Area */
 #main-deck-area {
     position: absolute;
@@ -44,7 +44,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-  
+
 /* Card Tracker */
 #card-tracker {
     display: flex;
@@ -52,7 +52,7 @@ body {
     align-items: center;
     margin-bottom: 2rem;
 }
-  
+
 .card-dot {
     width: 1.5rem;
     height: 1.5rem;
@@ -61,17 +61,17 @@ body {
     margin: 0.5rem;
     transition: background-color 0.3s ease;
 }
-  
+
 .card-dot.active {
     background-color: #4caf50; /* Green for active dots */
 }
-  
+
 /* Card Deck */
 .deck {
     width: 10vw;
-    height: 15vw;
-    max-width: 120px;
-    max-height: 180px;
+    height: auto;
+    max-width: 150px;
+    max-height: 225px;
     background-color: #fff;
     border: 0.2rem solid #000;
     border-radius: 0.8rem;
@@ -82,39 +82,40 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     margin-bottom: 6vh;
+    overflow: hidden; /* Prevents overflow of card images */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-  
+
+/* Card Image Styling */
+#card-display {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.8rem;
+}
+
 .deck:hover {
     transform: scale(1.05);
     box-shadow: 0.4rem 0.6rem 0.8rem rgba(0, 0, 0, 0.4);
 }
-  
-/* Card Display */
-#card-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #000;
-}
-  
+
 /* Action Buttons */
 #action-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 3rem;
-    margin-top: 8rem;
+    margin-top: 10rem;
 }
-  
+
 #shuffle-button-container {
     display: flex;
     justify-content: center;
     margin-top: 1rem;
 }
-  
+
 .btn {
     background-color: #f28b82;
     border: 0.3rem solid #000;
@@ -126,17 +127,17 @@ body {
     border-radius: 1rem;
     transition: all 0.3s ease;
 }
-  
+
 .btn:hover:enabled {
     background-color: #f77a6f;
     transform: scale(1.05);
 }
-  
+
 .btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
-  
+
 /* Slider Styling */
 .slider-container {
     display: flex;
@@ -144,7 +145,7 @@ body {
     align-items: center;
     margin-bottom: 2rem;
 }
-  
+
 .slider {
     -webkit-appearance: none;
     width: 80%;
@@ -154,7 +155,7 @@ body {
     outline: none;
     margin-top: 1rem;
 }
-  
+
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -164,7 +165,7 @@ body {
     border-radius: 50%;
     cursor: pointer;
 }
-  
+
 .slider::-moz-range-thumb {
     width: 1.5rem;
     height: 1.5rem;
@@ -172,12 +173,12 @@ body {
     border-radius: 50%;
     cursor: pointer;
 }
-  
+
 .player-count {
     font-size: 1.5rem;
     color: #333;
 }
-  
+
 /* Player Area */
 #player-area {
     display: flex;
@@ -188,13 +189,13 @@ body {
     position: absolute;
     bottom: 8%;
 }
-  
+
 .player {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-  
+
 .player img {
     width: 6vw;
     height: 6vw;
@@ -205,29 +206,29 @@ body {
     border: 0.2rem solid #000;
     object-fit: cover;
 }
-  
+
 .score-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0.5rem;
 }
-  
+
 .player .score {
     font-size: 1rem;
     font-weight: bold;
     color: #000;
     margin: 0.3rem 0;
 }
-  
+
 .live-score {
     color: #d9534f; /* Red for live score */
 }
-  
+
 .banked-score {
     color: #5cb85c; /* Green for banked score */
 }
-  
+
 .total-score {
     color: #0275d8; /* Blue for total score */
 }

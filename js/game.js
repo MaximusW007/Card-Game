@@ -24,10 +24,71 @@ window.addEventListener('DOMContentLoaded', () => {
     let usedCards = [];
     let gamePaused = false; // Tracks if the game is paused (e.g., during shuffle)
 
-    const cardValues = [
-        '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        'J', 'Q', 'K', 'A', 'Joker',
-    ];
+    const cardDeck = [
+        // Hearts
+        { name: '2H', value: 2, suit: 'hearts', image: '../Resources/cards/2H.png' },
+        { name: '3H', value: 3, suit: 'hearts', image: '../Resources/cards/3H.png' },
+        { name: '4H', value: 4, suit: 'hearts', image: '../Resources/cards/4H.png' },
+        { name: '5H', value: 5, suit: 'hearts', image: '../Resources/cards/5H.png' },
+        { name: '6H', value: 6, suit: 'hearts', image: '../Resources/cards/6H.png' },
+        { name: '7H', value: 7, suit: 'hearts', image: '../Resources/cards/7H.png' },
+        { name: '8H', value: 8, suit: 'hearts', image: '../Resources/cards/8H.png' },
+        { name: '9H', value: 9, suit: 'hearts', image: '../Resources/cards/9H.png' },
+        { name: '10H', value: 10, suit: 'hearts', image: '../Resources/cards/10H.png' },
+        { name: 'JH', value: 10, suit: 'hearts', image: '../Resources/cards/JH.png' },
+        { name: 'QH', value: 10, suit: 'hearts', image: '../Resources/cards/QH.png' },
+        { name: 'KH', value: 10, suit: 'hearts', image: '../Resources/cards/KH.png' },
+        { name: 'AH', value: 11, suit: 'hearts', image: '../Resources/cards/AH.png' },
+    
+        // Diamonds
+        { name: '2D', value: 2, suit: 'diamonds', image: '../Resources/cards/2D.png' },
+        { name: '3D', value: 3, suit: 'diamonds', image: '../Resources/cards/3D.png' },
+        { name: '4D', value: 4, suit: 'diamonds', image: '../Resources/cards/4D.png' },
+        { name: '5D', value: 5, suit: 'diamonds', image: '../Resources/cards/5D.png' },
+        { name: '6D', value: 6, suit: 'diamonds', image: '../Resources/cards/6D.png' },
+        { name: '7D', value: 7, suit: 'diamonds', image: '../Resources/cards/7D.png' },
+        { name: '8D', value: 8, suit: 'diamonds', image: '../Resources/cards/8D.png' },
+        { name: '9D', value: 9, suit: 'diamonds', image: '../Resources/cards/9D.png' },
+        { name: '10D', value: 10, suit: 'diamonds', image: '../Resources/cards/10D.png' },
+        { name: 'JD', value: 10, suit: 'diamonds', image: '../Resources/cards/JD.png' },
+        { name: 'QD', value: 10, suit: 'diamonds', image: '../Resources/cards/QD.png' },
+        { name: 'KD', value: 10, suit: 'diamonds', image: '../Resources/cards/KD.png' },
+        { name: 'AD', value: 11, suit: 'diamonds', image: '../Resources/cards/AD.png' },
+    
+        // Clubs
+        { name: '2C', value: 2, suit: 'clubs', image: '../Resources/cards/2C.png' },
+        { name: '3C', value: 3, suit: 'clubs', image: '../Resources/cards/3C.png' },
+        { name: '4C', value: 4, suit: 'clubs', image: '../Resources/cards/4C.png' },
+        { name: '5C', value: 5, suit: 'clubs', image: '../Resources/cards/5C.png' },
+        { name: '6C', value: 6, suit: 'clubs', image: '../Resources/cards/6C.png' },
+        { name: '7C', value: 7, suit: 'clubs', image: '../Resources/cards/7C.png' },
+        { name: '8C', value: 8, suit: 'clubs', image: '../Resources/cards/8C.png' },
+        { name: '9C', value: 9, suit: 'clubs', image: '../Resources/cards/9C.png' },
+        { name: '10C', value: 10, suit: 'clubs', image: '../Resources/cards/10C.png' },
+        { name: 'JC', value: 10, suit: 'clubs', image: '../Resources/cards/JC.png' },
+        { name: 'QC', value: 10, suit: 'clubs', image: '../Resources/cards/QC.png' },
+        { name: 'KC', value: 10, suit: 'clubs', image: '../Resources/cards/KC.png' },
+        { name: 'AC', value: 11, suit: 'clubs', image: '../Resources/cards/AC.png' },
+    
+        // Spades
+        { name: '2S', value: 2, suit: 'spades', image: '../Resources/cards/2S.png' },
+        { name: '3S', value: 3, suit: 'spades', image: '../Resources/cards/3S.png' },
+        { name: '4S', value: 4, suit: 'spades', image: '../Resources/cards/4S.png' },
+        { name: '5S', value: 5, suit: 'spades', image: '../Resources/cards/5S.png' },
+        { name: '6S', value: 6, suit: 'spades', image: '../Resources/cards/6S.png' },
+        { name: '7S', value: 7, suit: 'spades', image: '../Resources/cards/7S.png' },
+        { name: '8S', value: 8, suit: 'spades', image: '../Resources/cards/8S.png' },
+        { name: '9S', value: 9, suit: 'spades', image: '../Resources/cards/9S.png' },
+        { name: '10S', value: 10, suit: 'spades', image: '../Resources/cards/10S.png' },
+        { name: 'JS', value: 10, suit: 'spades', image: '../Resources/cards/JS.png' },
+        { name: 'QS', value: 10, suit: 'spades', image: '../Resources/cards/QS.png' },
+        { name: 'KS', value: 10, suit: 'spades', image: '../Resources/cards/KS.png' },
+        { name: 'AS', value: 11, suit: 'spades', image: '../Resources/cards/AS.png' },
+    
+        // Jokers
+        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/Joker1.png' },
+        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/Joker2.png' }
+    ];    
 
     // Update player count dynamically when slider changes
     slider.addEventListener('input', () => {
@@ -53,6 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
         initializeDeck();
         updateTurnIndicator();
         resetCardTracker();
+        resetCardDisplay(); // Set card display to the default card back
     }
 
     // Create players dynamically
@@ -80,7 +142,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the deck
     function initializeDeck() {
-        deck = [...cardValues, ...cardValues, 'Joker', 'Joker'];
+        deck = [...cardDeck]; // Use the full card deck
         shuffleDeck(deck);
     }
 
@@ -105,6 +167,11 @@ window.addEventListener('DOMContentLoaded', () => {
             dot.classList.add('card-dot');
             cardTracker.appendChild(dot);
         }
+    }
+
+    // Reset card display
+    function resetCardDisplay() {
+        cardDisplay.innerHTML = `<img src="../Resources/cards/card-back.png" alt="Card Back" class="card-image">`;
     }
 
     // Update card tracker
@@ -133,10 +200,12 @@ window.addEventListener('DOMContentLoaded', () => {
         const card = drawCard();
         if (!card) return;
 
-        cardDisplay.textContent = card; // Display the card
+        // Update card display to show the card image
+        cardDisplay.innerHTML = `<img src="${card.image}" alt="${card.name}" class="card-image">`;
+
         handleCardDraw(card);
 
-        if (card !== 'Joker') {
+        if (card.name !== 'Joker') {
             cardsDrawnThisTurn++;
             updateCardTracker();
         }
@@ -148,21 +217,17 @@ window.addEventListener('DOMContentLoaded', () => {
         if (cardsDrawnThisTurn === 3 && !isPictureCard) {
             setTimeout(() => endTurnButton.click(), 1500); // Auto-end turn
         }
-
-        setTimeout(() => {
-            cardDisplay.textContent = '?'; // Reset card display
-        }, 1500);
     });
 
     // Handle card draw logic
     function handleCardDraw(card) {
-        if (card === 'Joker') {
+        if (card.name === 'Joker') {
             handleJokerDraw();
             return;
         }
 
         const currentPlayer = players[currentPlayerIndex];
-        if (['J', 'Q', 'K'].includes(card)) {
+        if (['J', 'Q', 'K'].includes(card.name[0])) {
             isPictureCard = true;
             bankHalfButton.disabled = false;
         } else {
@@ -170,10 +235,10 @@ window.addEventListener('DOMContentLoaded', () => {
             bankHalfButton.disabled = true;
         }
 
-        if (card === 'A') {
+        if (card.name[0] === 'A') {
             currentPlayer.liveScore += 11;
         } else {
-            currentPlayer.liveScore += parseInt(card) || 0;
+            currentPlayer.liveScore += card.value;
         }
 
         updatePlayerScores(currentPlayer);
@@ -209,7 +274,6 @@ window.addEventListener('DOMContentLoaded', () => {
         deckElement.style.pointerEvents = 'none';
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
-        endTurnButton.classList.add('disabled'); // Ensure visually disabled state
     }
 
     // Enable all gameplay buttons
@@ -218,7 +282,6 @@ window.addEventListener('DOMContentLoaded', () => {
         deckElement.style.pointerEvents = 'auto';
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
-        endTurnButton.classList.remove('disabled'); // Ensure visually enabled state
     }
 
     // Update player scores
@@ -258,9 +321,9 @@ window.addEventListener('DOMContentLoaded', () => {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         updateTurnIndicator();
         resetCardTracker();
+        resetCardDisplay(); // Reset card display to the default card back
         bankHalfButton.disabled = true;
         endTurnButton.disabled = true;
-        cardsDrawnThisTurn = 0; // Reset card count explicitly here
     }
 
     // Determine the winner
