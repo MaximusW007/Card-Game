@@ -1,7 +1,7 @@
 {
-  "name": "your-app-name",
+  "name": "Joker-Hunt",
   "version": "1.0.0",
-  "description": "Your Electron app description",
+  "description": "Joker Hunt Card Game",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -14,6 +14,7 @@
     "electron-builder": "^24.0.0"
   },
   "dependencies": {
+    "Joker-Hunt": "file:",
     "your-app-name": "file:"
   },
   "build": {
