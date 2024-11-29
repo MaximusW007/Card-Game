@@ -86,8 +86,8 @@ window.addEventListener('DOMContentLoaded', () => {
         { name: 'AS', value: 11, suit: 'spades', image: '../Resources/cards/AS.png' },
     
         // Jokers
-        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/Joker1.png' },
-        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/Joker2.png' }
+        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/joker.png' },
+        { name: 'Joker', value: 0, suit: null, image: '../Resources/cards/joker.png' }
     ];    
 
     // Update player count dynamically
