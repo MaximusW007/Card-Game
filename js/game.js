@@ -137,12 +137,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     function highlightCurrentPlayer() {
-        // Remove highlight from all players
         document.querySelectorAll('.player').forEach(player => {
             player.classList.remove('highlighted');
         });
     
-        // Add highlight to the current player
         const currentPlayerDiv = document.getElementById(`player-${players[currentPlayerIndex].id}`);
         currentPlayerDiv.classList.add('highlighted');
     }
@@ -199,7 +197,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const card = drawCard();
         if (!card) return;
     
-        // Show the drawn card's image in the card display
+        // Show the drawn cards image in the card display
         const cardImage = document.getElementById('card-display');
         cardImage.src = card.image;
         cardImage.alt = card.name;
@@ -219,7 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => endTurnButton.click(), 1500);
         }
     
-        // Reset to card back after 2 seconds
+        // Reset to card back after 2 secs
         setTimeout(() => {
             cardImage.src = '../Resources/cards/card back red.png';
             cardImage.alt = 'Card Back';
@@ -286,40 +284,34 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePlayerScores(player) {
-        // Update the player's live, banked, and total scores in the UI
+        // Update the player's live, banked and total scores in the UI
         const totalScore = player.liveScore + player.bankedScore;
         document.getElementById(`player-${player.id}-live-score`).textContent = `Live: ${player.liveScore}`;
         document.getElementById(`player-${player.id}-banked-score`).textContent = `Banked: ${player.bankedScore}`;
         document.getElementById(`player-${player.id}-total-score`).textContent = `Total: ${totalScore}`;
     
-        // Check if the player's total score has reached or exceeded 100
         if (totalScore >= 150) {
             endGame(player);
         }
     }
     
     function endGame(winningPlayer) {
-        // Get modal elements
         const alertModal = document.getElementById('custom-alert');
         const alertTitle = document.getElementById('custom-alert-title');
         const alertMessage = document.getElementById('custom-alert-message');
         const alertClose = document.getElementById('custom-alert-close');
     
-        // Set modal content
         alertTitle.textContent = "Congratulations!";
         alertMessage.textContent = `Player ${winningPlayer.id} wins!`;
     
-        // Show the modal
         alertModal.classList.remove('hidden');
     
-        // Add a close event listener
         alertClose.addEventListener('click', () => {
             resetGame(); // Call reset game on close
         });
     }
     
     function resetGame() {
-        // Reload the game to reset
         location.reload();
     }
 

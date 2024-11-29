@@ -45,7 +45,7 @@ app.on('window-all-closed', () => {
   }
 });
 
-// Recreate a window when the app is activated (macOS behavior)
+// Recreate a window when the app is activated
 app.on('activate', () => {
   if (mainWindow === null) {
     createMainWindow();
