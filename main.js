@@ -19,7 +19,6 @@ const createMainWindow = () => {
   console.log('Resolved Icon Path:', path.join(__dirname, 'Resources', 'Icon-win.ico'));
   mainWindow.loadFile('pages/index.html');
 
-  // Remove the default menu
   Menu.setApplicationMenu(null);
 
   // Handle window close event
