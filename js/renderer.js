@@ -1,12 +1,11 @@
 window.addEventListener('DOMContentLoaded', () => {
-  // References to buttons on the title screen
   const playButton = document.getElementById('play-game');
   const rulesButton = document.getElementById('view-rules');
   const mainMenu = document.getElementById('main-menu');
   const rulesScreen = document.getElementById('rules-screen');
   const backButton = document.getElementById('back-to-menu');
 
-  // Navigate to game.html when "Play" is clicked
+  //Navigate to game screen
   if (playButton) {
     playButton.addEventListener('click', () => {
       window.location.href = '../pages/game.html';

@@ -10,18 +10,14 @@ const createMainWindow = () => {
     minWidth: 1000,
     minHeight: 700,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // Absolute path to preload script
+      preload: path.join(__dirname, 'preload.js'),
       icon: path.join(__dirname, 'Resources', 'Icon-win.ico'),
-      contextIsolation: true, // Secure context for renderer process
-      enableRemoteModule: false, // Deprecated module, best practice to disable
+      contextIsolation: true, 
+      enableRemoteModule: false,
     },
   });
   console.log('Resolved Icon Path:', path.join(__dirname, 'Resources', 'Icon-win.ico'));
-  // Load the main HTML file
   mainWindow.loadFile('pages/index.html');
-
-  // Open DevTools automatically (comment out if not needed)
-  //mainWindow.webContents.openDevTools();
 
   // Remove the default menu
   Menu.setApplicationMenu(null);
@@ -35,8 +31,6 @@ const createMainWindow = () => {
 // Create the main window when the app is ready
 app.on('ready', () => {
   createMainWindow();
-
-  // Register a global shortcut for toggling DevTools (Ctrl+Shift+I)
   globalShortcut.register('Control+Shift+I', () => {
     if (mainWindow) {
       mainWindow.webContents.toggleDevTools();
@@ -62,6 +56,3 @@ app.on('activate', () => {
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
 });
-
-// Debugging helpers to confirm process flow
-console.log('Main process is running');
