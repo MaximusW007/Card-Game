@@ -122,6 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
             players.push({ id: i, liveScore: 0, bankedScore: 0 });
             const playerDiv = document.createElement('div');
             playerDiv.classList.add('player');
+            playerDiv.setAttribute('id', `player-${i}`); // Assign unique ID to each player container
             playerDiv.innerHTML = `
                 <img src="../Resources/user.png" alt="Player ${i}" />
                 <div class="score-group">
@@ -132,6 +133,18 @@ window.addEventListener('DOMContentLoaded', () => {
             `;
             playerArea.appendChild(playerDiv);
         }
+        highlightCurrentPlayer(); // Highlight the first player initially
+    }
+    
+    function highlightCurrentPlayer() {
+        // Remove highlight from all players
+        document.querySelectorAll('.player').forEach(player => {
+            player.classList.remove('highlighted');
+        });
+    
+        // Add highlight to the current player
+        const currentPlayerDiv = document.getElementById(`player-${players[currentPlayerIndex].id}`);
+        currentPlayerDiv.classList.add('highlighted');
     }
 
     function initializeDeck() {
@@ -208,7 +221,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
         // Reset to card back after 2 seconds
         setTimeout(() => {
-            cardImage.src = '../Resources/cards/card back red.png'; // Reset to card back
+            cardImage.src = '../Resources/cards/card back red.png';
             cardImage.alt = 'Card Back';
         }, 2000);
     });    
@@ -303,6 +316,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function nextTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+        highlightCurrentPlayer();
         updateTurnIndicator();
         resetCardTracker();
         resetCardDisplay();
